@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "565187852259",
+    "project_id": "auth-tile-2025",
+    "storage_bucket": "auth-tile-2025.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565187852259:android:9abde5e40e00bd335852d6",
+        "android_client_info": {
+          "package_name": "com.example.tile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3UteIxSVo1BLhVViL6NEm5M3eDD8fV2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
