@@ -21,57 +21,67 @@ class _HomeScreenState extends State<HomeScreen> {
     const Center(
       child: Text('Favorit', style: TextStyle(fontSize: 18, color: Colors.grey)),
     ),
-    const ProfilScreen(), // Ensure this points to the correct ProfileScreen
+    const ProfilScreen(), // Pastikan ini mengarah ke ProfilScreen yang benar
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Set background color to white
-      appBar: AppBar(
-        title: Text('Home', style: GoogleFonts.poppins(color: Colors.black)),
-        backgroundColor: Colors.white, // Set AppBar color to white
-        elevation: 0, // Remove elevation
-        iconTheme: IconThemeData(color: Colors.black), // Set icon color to black
-      ),
-      body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.black, // Selected icon color
-        unselectedItemColor: Colors.grey, // Unselected icon color
-        backgroundColor: Colors.white, // BottomNavigationBar color
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article),
-            label: 'Berita',
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blueAccent, Colors.black],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorit',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
-      ),
-      floatingActionButton: _currentIndex == 0 // Show FAB only on Berita screen
-          ? FloatingActionButton(
-              backgroundColor: Colors.black, // Set FAB color to black
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AddBeritaScreen()),
-                );
+        ),
+        child: Column(
+          children: [
+            if (_currentIndex == 0) ...[
+              const SizedBox(height: 50), // Space for AppBar
+            ],
+            Expanded(
+              child: _screens[_currentIndex],
+            ),
+            BottomNavigationBar(
+              currentIndex: _currentIndex,
+              selectedItemColor: Colors.white,
+              unselectedItemColor: Colors.grey.shade300,
+              backgroundColor: Colors.transparent, // Jadikan transparan
+              onTap: (index) {
+                setState(() {
+                  if (index == 2) {
+                    // Handle profile navigation
+                    _currentIndex = index;
+                  } else if (index == 1) {
+                    // Open add berita screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AddBeritaScreen()),
+                    );
+                  } else {
+                    _currentIndex = index;
+                  }
+                });
               },
-              child: const Icon(Icons.add, color: Colors.white), // Set icon color to white
-            )
-          : null, // Set to null to hide the button on other screens
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.article),
+                  label: 'Berita',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.add),
+                  label: 'Tambah Berita',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profil',
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -98,7 +108,7 @@ class _BeritaScreenState extends State<BeritaScreen> {
     final beritaList = await DatabaseHelper().getBerita();
     setState(() {
       _beritaList = beritaList;
-      _filteredBeritaList = beritaList; // Set awal untuk menampilkan semua berita
+      _filteredBeritaList = beritaList;
     });
   }
 
@@ -110,7 +120,7 @@ class _BeritaScreenState extends State<BeritaScreen> {
             .where((berita) => berita.judul.toLowerCase().contains(query.toLowerCase()))
             .toList();
       } else {
-        _filteredBeritaList = _beritaList; // Kembalikan ke semua berita jika query kosong
+        _filteredBeritaList = _beritaList;
       }
     });
   }
@@ -127,9 +137,9 @@ class _BeritaScreenState extends State<BeritaScreen> {
             decoration: InputDecoration(
               hintText: "Cari berita...",
               hintStyle: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
-              prefixIcon: const Icon(Icons.search, color: Colors.black), // Change icon color to black
+              prefixIcon: const Icon(Icons.search, color: Colors.black),
               filled: true,
-              fillColor: Colors.grey[200], // Light grey background for the text field
+              fillColor: Colors.grey[200],
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
@@ -139,13 +149,12 @@ class _BeritaScreenState extends State<BeritaScreen> {
           const SizedBox(height: 16),
           // Image Slider
           Container(
-            height: MediaQuery.of(context).size.height * 0.25, // Responsive height
+            height: MediaQuery.of(context).size.height * 0.25,
             child: PageView(
               children: [
                 Image.asset('assets/image1.jpg', fit: BoxFit.cover),
                 Image.asset('assets/image2.jpg', fit: BoxFit.cover),
                 Image.asset('assets/image3.jpg', fit: BoxFit.cover),
-                // Tambahkan lebih banyak gambar sesuai kebutuhan
               ],
             ),
           ),
@@ -157,7 +166,7 @@ class _BeritaScreenState extends State<BeritaScreen> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
-                childAspectRatio: 0.75, // Maintain aspect ratio
+                childAspectRatio: 0.75,
               ),
               itemCount: _filteredBeritaList.length,
               itemBuilder: (context, index) {
@@ -205,7 +214,7 @@ class BeritaCard extends StatelessWidget {
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                   child: Image.file(
                     File(berita.imagePath),
-                    height: MediaQuery.of(context).size.height * 0.15, // Responsive height
+                    height: MediaQuery.of(context).size.height * 0.15,
                     width: double.infinity,
                     fit: BoxFit.cover,
                   ),
