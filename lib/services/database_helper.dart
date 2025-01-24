@@ -16,7 +16,6 @@ class DatabaseHelper {
     return _database!;
   }
 
-  // Inisialisasi database
   Future<Database> _initDB() async {
     String path = join(await getDatabasesPath(), 'berita.db');
     return await openDatabase(
@@ -36,7 +35,6 @@ class DatabaseHelper {
     );
   }
 
-  // Fungsi untuk menambahkan berita
   Future<void> insertBerita(Berita berita) async {
     final db = await database;
     await db.insert(
@@ -46,7 +44,6 @@ class DatabaseHelper {
     );
   }
 
-  // Fungsi untuk mendapatkan semua berita
   Future<List<Berita>> getBerita() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('berita');
@@ -55,7 +52,6 @@ class DatabaseHelper {
     });
   }
 
-  // Fungsi untuk memperbarui berita
   Future<void> updateBerita(Berita berita) async {
     final db = await database;
     await db.update(
@@ -66,7 +62,6 @@ class DatabaseHelper {
     );
   }
 
-  // Fungsi untuk menghapus berita
   Future<void> deleteBerita(int id) async {
     final db = await database;
     await db.delete(
